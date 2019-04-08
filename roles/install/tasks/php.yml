@@ -1,0 +1,30 @@
+---
+- name: Verificando do php.ini
+  stat:
+    path: /etc/php.ini.old
+  register: arq_php
+  
+- name: Backup php.ini
+  copy:
+    backup: yes
+    src: /etc/php.ini
+    dest: /etc/php.ini.old
+    remote_src: yes
+  when:  arq_php.stat.exists == false
+
+- name: Template PHP.ini
+  template:
+    src: php.ini
+    dest: /etc/
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart php
+
+- name: Redirecionamento httpd
+  template:
+    src: index.php
+    dest: /var/www/html
+    owner: root
+    group: root
+    mode: 0644

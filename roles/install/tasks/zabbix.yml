@@ -1,0 +1,29 @@
+---
+
+- name: Verificando do zabbix_server.conf
+  stat:
+    path: /etc/zabbix/zabbix_server.conf.old
+  register: arq_zabbix
+  
+- name: Backup zabbix_server
+  copy:
+    backup: yes
+    src: /etc/zabbix/zabbix_server.conf
+    dest: /etc/zabbix/zabbix_server.conf.old
+    remote_src: yes
+  when:  arq_zabbix.stat.exists == false
+
+- name: Template zabbix_server
+  template:
+    src: zabbix_server.conf
+    dest: /etc/zabbix/
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart zabbix
+
+
+
+
+
+...

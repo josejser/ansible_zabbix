@@ -1,0 +1,53 @@
+---
+- name: instalação de programas
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nmap
+    - wget
+    - ngrep
+    - net-tools
+    - mailx
+    - rsync
+    - mtr
+    - htop
+    - yum-utils
+    - ftp
+    - telnet
+    - cifs-utils
+    - ntfs-3g
+    - vim
+    - tree
+    - python-pip
+    - screen
+    - mariadb-server
+    # - zabbix-agent
+    # - zabbix-server-mysql
+    # - zabbix-get
+    # - zabbix-web-mysql
+
+- pip:
+    name: PyMySQL
+
+- name: removendo firewalld
+  yum:
+    name: firewalld
+    state: absent
+
+- name:
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  loop:
+    - httpd
+    - mariadb
+
+- name: Disabilitando Selinux
+  shell: setenforce 0
+
+- name:
+  shell: sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config
+  args:
+    warn: false

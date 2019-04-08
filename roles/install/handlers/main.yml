@@ -1,0 +1,16 @@
+---
+# handlers file for zabbix
+
+- name: restart php
+  systemd:
+    name: httpd
+    state: restarted
+
+- name: restart zabbix
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  loop:
+    - zabbix-server
+    - zabbix-agent

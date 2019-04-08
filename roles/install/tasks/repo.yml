@@ -1,0 +1,25 @@
+- name: Repositorio Epel-release
+  yum:
+    name: epel-release
+    state: latest
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Repositorio Official Zabbix
+  yum_repository:
+    name: Zabbix
+    file: union
+    description: Zabbix Official Repository - $basearch
+    baseurl: http://repo.zabbix.com/zabbix/4.0/rhel/7/$basearch/
+    gpgcheck: no
+    enabled: yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Repositorio não suportados Zabbix
+  yum_repository:
+    name: zabbix-no-supported
+    file: union
+    description: Zabbix Official Repository non-supported - $basearc
+    baseurl: http://repo.zabbix.com/non-supported/rhel/7/$basearch/
+    gpgcheck: no
+    enabled: yes
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'

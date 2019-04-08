@@ -1,0 +1,5 @@
+- name: zabbix
+  hosts: zabbix
+  roles:
+    - install
+ 

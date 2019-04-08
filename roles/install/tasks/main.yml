@@ -1,0 +1,16 @@
+---
+# - name: Repositorios
+#   import_tasks: repo.yml
+
+- name: instalação de pacotes
+  import_tasks: install.yml
+
+# - name: Configurações do banco
+#   import_tasks: banco.yml
+
+# - name: Configurações php
+#   import_tasks: php.yml
+
+# - name: Configurações zabbix
+#   import_tasks: zabbix.yml
+...

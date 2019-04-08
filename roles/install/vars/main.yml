@@ -1,0 +1,12 @@
+---
+pass_db_zabbix:
+  zabbix
+
+host_db_zabbix:
+  localhost
+  
+php_time_zone:
+  America/Sao_Paulo
+
+mysql_root_pass:
+  suasenhamysql

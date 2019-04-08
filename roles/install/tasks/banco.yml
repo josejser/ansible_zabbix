@@ -1,0 +1,46 @@
+
+- name: Database test
+  mysql_db:
+    name: test
+    state: absent
+
+- name: User anonymous
+  mysql_user:
+    name: ''
+    host: "{{ item }}"
+    state: absent
+  loop:
+    - 127.0.0.1
+    - localhost
+    - ::1
+
+- name: create database zabbix
+  mysql_db:
+    name: zabbix
+    state: present
+
+- name: add User
+  mysql_user:
+    name: zabbix
+    priv: 'zabbix.*:ALL'
+    host: localhost
+    state: present
+    password: "{{ pass_db_zabbix }}"
+
+
+- name: Search create.sql.gz
+  shell: find /usr/share/doc/ -name create.sql.gz
+  register: sql_zabbix
+
+- name: Import Tables zabbix
+  shell: zcat "{{ sql_zabbix.stdout }}" | mysql -u root zabbix
+
+
+- name: Update password user root
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysql_root_pass }}"
+  loop:
+    - 127.0.0.1
+    - localhost
